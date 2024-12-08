@@ -1,28 +1,21 @@
-from flask import Flask, request, render_template, redirect, url_for
-
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":
-        field1 = request.form.get("field1")
-        field2 = request.form.get("field2")
+    message = ''
+    if request.method == 'POST':
+        city1 = request.form.get('city1')
+        city2 = request.form.get('city2')
+        if city1 and city2:
+            message = f'{city1} и {city2}'
+        else:
+            message = 'Пожалуйста, заполните оба поля'
 
-        # запрос за данными
-
-
-        return redirect(url_for("result", field1=field1, field2=field2))
-    return render_template("index.html")
-
-
-@app.route("/result")
-def result():
-    field1 = request.args.get("field1", "")
-    field2 = request.args.get("field2", "")
-
-    return render_template("result.html", field1=field1, field2=field2)
+    return render_template('index.html', message=message)
 
 
-if __name__ == "__main__":
-    app.run()
+
+if __name__ == '__main__':
+    app.run(debug=True)
